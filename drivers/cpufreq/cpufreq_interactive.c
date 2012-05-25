@@ -92,6 +92,9 @@ static unsigned long min_sample_time;
  */
 #define DEFAULT_TIMER_RATE (20 * USEC_PER_MSEC)
 static unsigned long timer_rate;
+#ifdef CONFIG_OMAP4_DPLL_CASCADING
+static unsigned long default_timer_rate;
+#endif
 
 /*
  * Wait this long before raising speed above hispeed, by default a single
@@ -131,6 +134,19 @@ struct cpufreq_governor cpufreq_gov_interactive = {
 	.max_transition_latency = 10000000,
 	.owner = THIS_MODULE,
 };
+
+#ifdef CONFIG_OMAP4_DPLL_CASCADING
+void cpufreq_interactive_set_timer_rate(unsigned long val, unsigned int reset)
+{
+	if (!reset) {
+		default_timer_rate = timer_rate;
+		timer_rate = val;
+	} else {
+		if (timer_rate == val)
+			timer_rate = default_timer_rate;
+	}
+}
+#endif
 
 static void cpufreq_interactive_timer(unsigned long data)
 {
@@ -1038,6 +1054,9 @@ static int __init cpufreq_interactive_init(void)
 	min_sample_time = DEFAULT_MIN_SAMPLE_TIME;
 	above_hispeed_delay_val = DEFAULT_ABOVE_HISPEED_DELAY;
 	timer_rate = DEFAULT_TIMER_RATE;
+#ifdef CONFIG_OMAP4_DPLL_CASCADING
+	default_timer_rate = DEFAULT_TIMER_RATE;
+#endif
 
 	/* Initalize per-cpu timers */
 	for_each_possible_cpu(i) {
