@@ -144,5 +144,4 @@ source "drivers/phone_svn/Kconfig"
 
 source "drivers/modemctl/Kconfig"
 
-source "drivers/battery/Kconfig"
 endmenu
