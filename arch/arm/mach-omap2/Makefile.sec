@@ -12,14 +12,6 @@
 # GNU General Public License for more details.
 #
 
-obj-$(CONFIG_MACH_OMAP_SAMSUNG)		+= sec_common.o
-
-obj-$(CONFIG_SEC_DEBUG)			+= sec_debug.o
-obj-$(CONFIG_SAMSUNG_USE_SEC_LOG_BUF)	+= sec_log_buf.o
-obj-$(CONFIG_SAMSUNG_ADD_GAFORENSICINFO)+= sec_gaf.o
-obj-$(CONFIG_SAMSUNG_USE_GETLOG)	+= sec_getlog.o
-obj-$(CONFIG_SAMSUNG_USE_LOGGER_ADDON)	+= sec_logger.o
-
 obj-$(CONFIG_MACH_OMAP4_SAMSUNG)	+= hsmmc.o \
 					   omap_phy_internal.o \
 					   omap_muxtbl.o \
@@ -43,7 +35,6 @@ obj-$(CONFIG_MACH_SAMSUNG_ESPRESSO)	+= board-espresso.o \
 					   board-espresso-bluetooth.o \
 					   board-espresso-jack.o \
 					   board-espresso-power.o \
-					   board-espresso-camera.o \
 					   board-espresso-vibrator.o \
 					   board-espresso-irled.o
 
@@ -68,7 +59,6 @@ obj-$(CONFIG_MACH_SAMSUNG_ESPRESSO_10)	+= board-espresso10.o \
 					   board-espresso10-modems.o \
 					   board-espresso10-sensor.o \
 					   board-espresso10-input.o \
-					   board-espresso10-camera.o \
 					   board-espresso10-vibrator.o \
 					   board-espresso10-irled.o
 

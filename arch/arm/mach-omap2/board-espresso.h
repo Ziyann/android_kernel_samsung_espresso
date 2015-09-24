@@ -17,8 +17,23 @@
 
 #include <linux/serial_core.h>
 
-#include "sec_board_id.h"
-#include "sec_common.h"
+extern struct class *sec_class;
+
+/* GT-P3100 / GT-P3110 / GT-P3113 */
+/* Reference Device */
+#define SEC_MACHINE_ESPRESSO		0x01
+/* Non-Modem Device */
+#define SEC_MACHINE_ESPRESSO_WIFI	0x03
+/* Non-Modem Device for Best Buy */
+#define SEC_MACHINE_ESPRESSO_USA_BBY	0x05
+
+/* GT-P5100 / GT-P5110 / GT-5113 */
+/* Reference Device */
+#define SEC_MACHINE_ESPRESSO10		0x02
+/* Non-Modem Device */
+#define SEC_MACHINE_ESPRESSO10_WIFI	0x04
+/* Non-Modem Device for Best Buy */
+#define SEC_MACHINE_ESPRESSO10_USA_BBY	0x06
 
 enum espresso_adc_ch {
 	REMOTE_SENSE = 0,
@@ -78,13 +93,11 @@ void bcm_bt_lpm_exit_lpm_locked(struct uart_port *uport);
 /** @category charger */
 void omap4_espresso_charger_init(void);
 
-/** @category camera */
-void omap4_espresso_camera_init(void);
-
 /** @category modem*/
 void omap4_espresso_none_modem_init(void);
 
 void check_jig_status(int status);
 
 void notify_dock_status(int status);
+
 #endif /* __BOARD_ESPRESSO_H__ */
