@@ -911,6 +911,12 @@ static void espresso_host_notifier_init(struct omap4_otg *otg)
 
 static void connector_gpio_init(void)
 {
+	unsigned int reg_val;
+
+	reg_val = omap4_ctrl_pad_readl(OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_USBB_HSIC);
+	reg_val &= ~OMAP4_USBB2_HSIC_DATA_WD_MASK;
+	omap4_ctrl_pad_writel(reg_val, OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_USBB_HSIC);
+
 	if (system_rev >= 10) {
 		connector_gpios[NUM_ACCESSORY_INT].gpio = GPIO_ACCESSORY_INT_1_8V_V10;
 	}

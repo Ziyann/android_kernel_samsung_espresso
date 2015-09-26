@@ -12,8 +12,6 @@
  * GNU General Public License for more details.
  */
 
-#include <linux/gpio.h>
-
 #include <plat/io.h>
 
 #include <mach/ctrl_module_pad_core_44xx.h>
@@ -51,30 +49,21 @@ static void __init omap4_muxtbl_set_pbias_gpio_pre(
 		struct omap_board_mux *mux)
 {
 	unsigned int reg_val;
-	const unsigned int pad_core_base = OMAP4_CTRL_MODULE_PAD_CORE;
-	const unsigned int pad_wkup_base = OMAP4_CTRL_MODULE_PAD_WKUP;
 
 	if (partition != wkup_part || omap4_muxtbl_is_pbias_gpio(mux))
 		return;
 
-	reg_val = omap_readl(pad_core_base +
-			     OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
-	reg_val &= ~(OMAP4_USIM_PBIASLITE_PWRDNZ_MASK |
-		     OMAP4_USBC1_ICUSB_PWRDNZ_MASK);
-	omap_writel(reg_val, pad_core_base +
-		    OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
+	reg_val = omap4_ctrl_pad_readl(OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
+	reg_val &= ~(OMAP4_USIM_PBIASLITE_PWRDNZ_MASK | OMAP4_USBC1_ICUSB_PWRDNZ_MASK);
+	omap4_ctrl_pad_writel(reg_val, OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
 
-	reg_val = omap_readl(pad_wkup_base +
-			     OMAP4_CTRL_MODULE_PAD_WKUP_CONTROL_USIMIO);
+	reg_val = omap4_ctrl_wk_pad_readl(OMAP4_CTRL_MODULE_PAD_WKUP_CONTROL_USIMIO);
 	reg_val &= ~(OMAP4_USIM_PBIASLITE_PWRDNZ_MASK);
-	omap_writel(reg_val, pad_wkup_base +
-		    OMAP4_CTRL_MODULE_PAD_WKUP_CONTROL_USIMIO);
+	omap4_ctrl_wk_pad_writel(reg_val, OMAP4_CTRL_MODULE_PAD_WKUP_CONTROL_USIMIO);
 
-	reg_val = omap_readl(pad_core_base +
-			     OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
+	reg_val = omap4_ctrl_pad_readl(OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
 	reg_val &= ~(OMAP4_USIM_PBIASLITE_HIZ_MODE_MASK);
-	omap_writel(reg_val, pad_core_base +
-		    OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
+	omap4_ctrl_pad_writel(reg_val, OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
 }
 
 static void __init omap4_muxtbl_set_pbias_gpio_post(
@@ -82,100 +71,33 @@ static void __init omap4_muxtbl_set_pbias_gpio_post(
 		struct omap_board_mux *mux)
 {
 	unsigned int reg_val;
-	const unsigned int pad_core_base = OMAP4_CTRL_MODULE_PAD_CORE;
-	const unsigned int pad_wkup_base = OMAP4_CTRL_MODULE_PAD_WKUP;
 
 	if (partition != wkup_part || omap4_muxtbl_is_pbias_gpio(mux))
 		return;
 
-	reg_val = omap_readl(pad_core_base +
-			     OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_MMC1);
-	reg_val &= ~(OMAP4_SDMMC1_DR0_SPEEDCTRL_MASK |
-		     OMAP4_USBC1_DR0_SPEEDCTRL_MASK);
-	omap_writel(reg_val, pad_core_base +
-		    OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_MMC1);
+	reg_val = omap4_ctrl_pad_readl(OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_MMC1);
+	reg_val &= ~(OMAP4_SDMMC1_DR0_SPEEDCTRL_MASK | OMAP4_USBC1_DR0_SPEEDCTRL_MASK);
+	omap4_ctrl_pad_writel(reg_val, OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_MMC1);
 
-	reg_val = omap_readl(pad_wkup_base +
-			     OMAP4_CTRL_MODULE_PAD_WKUP_CONTROL_USIMIO);
-	reg_val &= ~(OMAP4_PAD_USIM_CLK_LOW_MASK |
-		     OMAP4_PAD_USIM_RST_LOW_MASK);
-	omap_writel(reg_val, pad_wkup_base +
-		    OMAP4_CTRL_MODULE_PAD_WKUP_CONTROL_USIMIO);
+	reg_val = omap4_ctrl_wk_pad_readl(OMAP4_CTRL_MODULE_PAD_WKUP_CONTROL_USIMIO);
+	reg_val &= ~(OMAP4_PAD_USIM_CLK_LOW_MASK | OMAP4_PAD_USIM_RST_LOW_MASK);
+	omap4_ctrl_wk_pad_writel(reg_val, OMAP4_CTRL_MODULE_PAD_WKUP_CONTROL_USIMIO);
 
-	reg_val = omap_readl(pad_core_base +
-			     OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
-	reg_val &= ~(OMAP4_USIM_PBIASLITE_VMODE_MASK |
-		     OMAP4_MMC1_PBIASLITE_VMODE_ERROR_MASK);
-	omap_writel(reg_val, pad_core_base +
-		    OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
+	reg_val = omap4_ctrl_pad_readl(OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
+	reg_val &= ~(OMAP4_USIM_PBIASLITE_VMODE_MASK | OMAP4_MMC1_PBIASLITE_VMODE_ERROR_MASK);
+	omap4_ctrl_pad_writel(reg_val, OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
 
-	reg_val = omap_readl(pad_core_base +
-			     OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
-	reg_val |= (OMAP4_USIM_PBIASLITE_PWRDNZ_MASK |
-		    OMAP4_USBC1_ICUSB_PWRDNZ_MASK);
-	omap_writel(reg_val, pad_core_base +
-		    OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
+	reg_val = omap4_ctrl_pad_readl(OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
+	reg_val |= (OMAP4_USIM_PBIASLITE_PWRDNZ_MASK | OMAP4_USBC1_ICUSB_PWRDNZ_MASK);
+	omap4_ctrl_pad_writel(reg_val, OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
 
-	reg_val = omap_readl(pad_wkup_base +
-			     OMAP4_CTRL_MODULE_PAD_WKUP_CONTROL_USIMIO);
+	reg_val = omap4_ctrl_wk_pad_readl(OMAP4_CTRL_MODULE_PAD_WKUP_CONTROL_USIMIO);
 	reg_val |= OMAP4_USIM_PWRDNZ_MASK;
-	omap_writel(reg_val,
-		    pad_wkup_base + OMAP4_CTRL_MODULE_PAD_WKUP_CONTROL_USIMIO);
+	omap4_ctrl_wk_pad_writel(reg_val, OMAP4_CTRL_MODULE_PAD_WKUP_CONTROL_USIMIO);
 
-	reg_val = omap_readl(pad_core_base +
-			     OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
-	reg_val |= (OMAP4_USIM_PBIASLITE_PWRDNZ_MASK |
-		    OMAP4_USBC1_ICUSB_PWRDNZ_MASK);
-	omap_writel(reg_val, pad_core_base +
-		    OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
-}
-
-static void __init omap_muxtbl_set_usbbx_gpio(struct omap_muxtbl *muxtbl)
-{
-	unsigned int reg_base;
-	unsigned int reg_val;
-	unsigned int shift;
-	unsigned int cfg_val;
-	unsigned int mux_val;
-
-	/* not a gpio mode */
-	if (likely((muxtbl->mux.value & OMAP_MUX_MODE7) != OMAP_MUX_MODE3))
-		return;
-
-	switch (muxtbl->gpio.gpio) {
-	case 96:	/* usbb1_hsic_data */
-		shift = OMAP4_USBB1_HSIC_DATA_WD_SHIFT;
-		break;
-	case 97:	/* usbb1_hsic_strobe */
-		shift = OMAP4_USBB1_HSIC_STROBE_WD_SHIFT;
-		break;
-	case 169:	/* usbb2_hsic_data */
-		shift = OMAP4_USBB2_HSIC_DATA_WD_SHIFT;
-		break;
-	case 170:	/* usbb2_hsic_strobe */
-		shift = OMAP4_USBB2_HSIC_STROBE_WD_SHIFT;
-		break;
-	default:
-		return;
-	}
-
-	mux_val = muxtbl->mux.value;
-	if ((mux_val & OMAP_PIN_INPUT_PULLUP) == OMAP_PIN_INPUT_PULLUP)
-		cfg_val = 0x1;
-	else if ((mux_val & OMAP_PIN_INPUT_PULLDOWN) == OMAP_PIN_INPUT_PULLDOWN)
-		cfg_val = 0x2;
-	else if ((mux_val & OMAP_PIN_INPUT) == OMAP_PIN_INPUT)
-		cfg_val = 0x0;
-	else
-		cfg_val = 0x3;
-
-	reg_base = OMAP4_CTRL_MODULE_PAD_CORE;
-	reg_val = omap_readl(reg_base +
-			OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_USBB_HSIC);
-	reg_val &= ~(0x3 << shift);
-	reg_val |= cfg_val << shift;
-	omap_writel(reg_val, reg_base +
-			OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_USBB_HSIC);
+	reg_val = omap4_ctrl_pad_readl(OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
+	reg_val |= (OMAP4_USIM_PBIASLITE_PWRDNZ_MASK | OMAP4_USBC1_ICUSB_PWRDNZ_MASK);
+	omap4_ctrl_pad_writel(reg_val, OMAP4_CTRL_MODULE_PAD_CORE_CONTROL_PBIASLITE);
 }
 
 void __init omap4_muxtbl_init(void)
@@ -184,22 +106,11 @@ void __init omap4_muxtbl_init(void)
 	wkup_part = omap_mux_get("wkup");
 }
 
-static int __init omap4_muxtbl_in_gpio_expander(struct omap_muxtbl *muxtbl)
-{
-	if (unlikely(muxtbl->gpio.gpio >= OMAP_MAX_GPIO_LINES &&
-		     muxtbl->gpio.gpio != OMAP_MUXTBL_NO_GPIO))
-		return 1;
-	return 0;
-}
-
 int __init omap4_muxtbl_add_mux(struct omap_muxtbl *muxtbl)
 {
 	struct omap_board_mux *mux = &muxtbl->mux;
 	int wk_mux = muxtbl->domain;
 	struct omap_mux_partition *partition;
-
-	if (omap4_muxtbl_in_gpio_expander(muxtbl))
-		return 0;
 
 	if (unlikely(wk_mux))
 		partition = wkup_part;
@@ -209,8 +120,6 @@ int __init omap4_muxtbl_add_mux(struct omap_muxtbl *muxtbl)
 	omap4_muxtbl_set_pbias_gpio_pre(partition, mux);
 
 	omap_mux_write(partition, mux->value, mux->reg_offset);
-
-	omap_muxtbl_set_usbbx_gpio(muxtbl);
 
 	omap4_muxtbl_set_pbias_gpio_post(partition, mux);
 

@@ -53,11 +53,6 @@ static int __init __sec_muxtbl_setup_list(unsigned int type,
 		cnt++;
 	}
 
-	if (!cnt) {
-		pr_warn("(%s): no available mux_data.\n", __func__);
-		return -1;
-	}
-
 	list_sort(NULL, &__sec_muxtbl_data_s.list, __sec_muxtbl_sort_cmp);
 
 	*head = &__sec_muxtbl_data_s;
@@ -74,8 +69,7 @@ int __init sec_muxtbl_init(unsigned int type, unsigned int rev)
 
 	omap4_muxtbl_init();
 
-	if (__sec_muxtbl_setup_list(type, &head, rev))
-		return 0;
+	__sec_muxtbl_setup_list(type, &head, rev);
 
 	list_for_each(pos, &(head->list)) {
 		cur = list_entry(pos, struct sec_muxtbl_node, list);

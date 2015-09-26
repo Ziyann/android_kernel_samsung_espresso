@@ -15,6 +15,7 @@
 #ifndef __OMAP_MUXTBL_H__
 #define __OMAP_MUXTBL_H__
 
+#include <linux/gpio.h>
 #include <linux/rbtree.h>
 
 #define OMAP_MUXTBL_NO_GPIO		0xFFFFFFFF

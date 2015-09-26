@@ -13,7 +13,6 @@
  */
 
 #include <linux/crc32.h>
-#include <linux/gpio.h>
 
 #include "mux.h"
 #include "omap_muxtbl.h"
